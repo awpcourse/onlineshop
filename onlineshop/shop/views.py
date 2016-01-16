@@ -1,10 +1,13 @@
 from django.shortcuts import render
-
+from django.db.models import Sum
 from django.views.generic import TemplateView
 from models import Product
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from shop.forms import UserLoginForm
+from shop.models import CommandLine
+from django.views.generic.list import ListView
+from django.http import HttpResponse
 
 class Home(TemplateView):
     template_name = "home.html"
@@ -35,3 +38,34 @@ def login_view(request):
         else:
             login(request, user)
             return redirect('/')
+
+
+
+class AddProduct(ListView):
+    model = CommandLine
+    template_name = 'add_product.html'
+    
+    def get(self, request, *args, **kwargs):
+
+        new_product = CommandLine.objects.get(id_user = request.user)
+        if new_product == None :
+            new_product = CommandLine(id_user = request.user)
+            new_product.save()
+            new_product.id_products.add(self.kwargs['pk'])
+        else :
+            new_product.id_products.add(self.kwargs['pk'])
+        return redirect('/')
+
+def shopping_cart(request):
+    products = CommandLine.objects.get(id_user = request.user)
+    total = sum([p.price for p in products.id_products.all()])
+    if request.method == 'GET':
+        context = {
+            'products': products,
+            'total' : total,
+        }
+        return render(request, 'shopping-cart.html', context)
+
+    
+    
+        

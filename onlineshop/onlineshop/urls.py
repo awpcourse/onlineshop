@@ -21,6 +21,8 @@ import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^login/$', views.login_view, name='login'),
     url(r'^$', views.Home.as_view(), name='home'),
 
 ]+ static('Pictures/', document_root=settings.UPLOAD_ROOT)
+

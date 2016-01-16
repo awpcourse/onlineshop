@@ -11,4 +11,7 @@ class Product(models.Model):
     picture = models.ImageField(upload_to='./Pictures/',default='')
     class Meta:
         ordering = ['price']
+
+class WishList(models.Model):
+    id_product 
     

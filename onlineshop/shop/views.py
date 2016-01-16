@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Sum
 from django.views.generic import TemplateView
-from models import Product
+from models import Product, History
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from shop.forms import UserLoginForm, UserRegisterForm
@@ -83,7 +83,7 @@ class AddProduct(ListView):
 
 def shopping_cart(request):
     try:
-        cart = CommandLine.objects.get(id_user = request.user)
+        cart = get_cart(request)
         products = cart.id_products.all()
     except ObjectDoesNotExist:
         products = []
@@ -94,3 +94,23 @@ def shopping_cart(request):
             'total' : total,
         }
         return render(request, 'shopping-cart.html', context)
+    else:
+        if request.method == 'POST':
+            return confirm_order(request)
+
+
+def get_cart(request):
+    return CommandLine.objects.get(id_user = request.user)      
+
+def confirm_order(request):
+    cart=get_cart(request)
+    history = History(id_user=request.user) 
+    history.save() 
+    for product in cart.id_products.all():
+        product.quantity = product.quantity - 1
+        history.id_product.add(product)
+        product.save()
+    history.save()
+    cart.delete()    
+    return redirect('home')
+

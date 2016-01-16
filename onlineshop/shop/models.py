@@ -8,7 +8,7 @@ class Product(models.Model):
     name = models.TextField(max_length=100)
     description = models.TextField(max_length=300)
     price = models.FloatField()
-    quantity = models.TextField()
+    quantity = models.IntegerField()
     picture = models.ImageField(upload_to='./Pictures/',default='')
     class Meta:
         ordering = ['price']
@@ -37,4 +37,3 @@ class FaultyProduct(models.Model):
 class CommandLine(models.Model):
     id_user = models.ForeignKey(User)
     id_products = models.ManyToManyField(Product)
-    

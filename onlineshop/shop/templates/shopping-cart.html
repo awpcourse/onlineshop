@@ -10,4 +10,11 @@
 <h1> Total:{{ total }} </h1>
         
  </div>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Trimite Comanda</button>
+ </form>  
+
 {% endblock %}

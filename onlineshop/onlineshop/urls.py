@@ -26,8 +26,7 @@ urlpatterns = [
     url(r'^$', views.Home.as_view(), name='home'),
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^register/$', views.register_view, name='register'),
+    url(r'^detail/(?P<product_id>\d+)$', views.Details.as_view(), name='detail'),
     url(r'^shoppingcart/$', views.shopping_cart, name='shoppingcart'),
 
 ]+ static('Pictures/', document_root=settings.UPLOAD_ROOT)
-
-

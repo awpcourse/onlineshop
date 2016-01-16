@@ -23,6 +23,10 @@ class Home(TemplateView):
     def list_products(self):
         return Product.objects.all()
 
+class Details(TemplateView):
+    template_name = "detail.html"
+    def get_product(self):
+        return Product.objects.get(id=self.kwargs['product_id'])
 
 def login_view(request):
     if request.method == 'GET':

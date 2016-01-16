@@ -20,6 +20,14 @@
 </form>
 
 
+{%for comment in comments%}
+
+<div>{{comment.id_user.username}}: {{comment.text}} </div>
+
+{%endfor%}
+
+
+
 <a href="{% url 'home' %}"><small>Back</small></a>
 </body>
 </html>

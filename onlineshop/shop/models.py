@@ -16,11 +16,12 @@ class Product(models.Model):
 class Wishlist(models.Model):
     id_product = models.ForeignKey(Product)
     id_user = models.ForeignKey(User)
-    
+
 class ProductComment(models.Model):
     id_product = models.ForeignKey(Product)
     id_user = models.ForeignKey(User)
     text = models.TextField()
+
 
 class History(models.Model):
     id_history = models.AutoField(primary_key=True)
@@ -28,13 +29,12 @@ class History(models.Model):
     id_user = models.ForeignKey(User)
     date = models.DateTimeField(
         auto_now_add=True)
-    
+
 class FaultyProduct(models.Model):
     id_product = models.ForeignKey(Product)
     id_user = models.ForeignKey(User)
     return_date = models.DateTimeField()
-    
+
 class CommandLine(models.Model):
     id_user = models.ForeignKey(User)
     id_products = models.ManyToManyField(Product)
-    

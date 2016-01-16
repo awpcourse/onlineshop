@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from shop.forms import UserLoginForm, UserRegisterForm
 from shop.forms import UserLoginForm
-from shop.models import CommandLine
+from shop.models import CommandLine, ProductComment
 from django.views.generic.list import ListView
 from django.http import HttpResponse
 
@@ -41,8 +41,21 @@ class Details(View):
     def get(self, request, *args, **kwargs):
         form = self.form_class()
         product = Product.objects.get(id=self.kwargs['product_id'])
-        return render(request, self.template_name, {'form': form,'product': product})
+        comments = ProductComment.objects.filter(id_product=self.kwargs['product_id'])
 
+        return render(request, self.template_name, {'form': form,'product': product, 'comments': comments})
+
+
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data['text']
+            comment = ProductComment(text=text, id_user=request.user, id_product=Product.objects.get(id=self.kwargs['product_id']))
+            comment.save()
+            return self.get(request, *args, **kwargs)
+
+        return render(request, self.template_name, {'form': form})
 
 
 

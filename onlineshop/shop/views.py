@@ -8,6 +8,7 @@ from shop.forms import UserLoginForm
 from shop.models import CommandLine
 from django.views.generic.list import ListView
 from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
 
 class Home(TemplateView):
     template_name = "home.html"
@@ -53,8 +54,12 @@ class AddProduct(ListView):
         return redirect('/')
 
 def shopping_cart(request):
-    products = CommandLine.objects.get(id_user = request.user)
-    total = sum([p.price for p in products.id_products.all()])
+    try:
+        cart = CommandLine.objects.get(id_user = request.user)
+        products = cart.id_products.all()
+    except ObjectDoesNotExist:
+        products = []
+    total = sum([p.price for p in products])
     if request.method == 'GET':
         context = {
             'products': products,
@@ -62,6 +67,8 @@ def shopping_cart(request):
         }
         return render(request, 'shopping-cart.html', context)
 
+    
+    
     
     
         

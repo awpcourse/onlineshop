@@ -23,6 +23,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', views.login_view, name='login'),
     url(r'^$', views.Home.as_view(), name='home'),
+    url(r'^detail/(?P<product_id>\d+)$', views.Details.as_view(), name='detail'),
 
 ]+ static('Pictures/', document_root=settings.UPLOAD_ROOT)
-

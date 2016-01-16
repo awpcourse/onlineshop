@@ -6,9 +6,8 @@
 {% for product in view.list_products %}
 <div>
   {{product.name}}<br>
-  {{product.description}}<br>
   Pret: {{product.price}}<br>
-   <img width="200" height="200" src="{{ product.picture }}">
+   <a href = "detail/{{product.id}}"> <img width="200" height="200" src="{{ product.picture }}"> </a>
 </div>
 
 {% endfor %}

@@ -15,7 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from shop import views
+from django.conf.urls.static import static
+import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-]
+    url(r'^$', views.Home.as_view(), name='home'),
+
+]+ static('Pictures/', document_root=settings.UPLOAD_ROOT)

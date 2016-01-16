@@ -1,0 +1,17 @@
+
+{% extends 'main.html' %}
+{% block content %}
+
+
+{% for product in view.list_products %}
+<div>
+  {{product.name}}<br>
+  {{product.description}}<br>
+  Pret: {{product.price}}<br>
+   <img width="200" height="200" src="{{ product.picture }}">
+</div>
+
+{% endfor %}
+
+
+{% endblock %}

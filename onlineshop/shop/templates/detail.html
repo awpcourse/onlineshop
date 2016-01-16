@@ -3,16 +3,23 @@
 <h1>Detail View</h1>
 
 <div>
-  {{view.get_product.name}}<br>
-  {{view.get_product.description}}<br>
-  Pret: {{view.get_product.price}}<br>
-  <p>{{view.message}}</p>
-  <img width="200" height="200" src="/{{ view.get_product.picture }}"></br>
-<a href="/add_product/{{view.get_product.id}}">Add to cart</a>
-<a href="/delete_product/{{view.get_product.id}}">Delete from cart</a>
-  </div>
+
+  {{product.name}}<br>
+  {{product.description}}<br>
+  Pret: {{product.price}}<br>
+  <img width="200" height="200" src="/{{ product.picture }}">
+  <a href="/add_product/{{product.id}}">Add to cart</a>
+  <a href="/delete_product/{{product.id}}">Delete from cart</a>
+</div>
 
 
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Post Comment</button>
+</form>
 
+
+<a href="{% url 'home' %}"><small>Back</small></a>
 </body>
 </html>

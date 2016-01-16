@@ -9,8 +9,14 @@ from shop.forms import UserLoginForm
 from shop.models import CommandLine
 from django.views.generic.list import ListView
 from django.http import HttpResponse
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
+from django import forms
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.views.generic import View
+from .forms import CommentForm
 
 
 class Home(TemplateView):
@@ -25,10 +31,22 @@ class Home(TemplateView):
     def list_products(self):
         return Product.objects.all()
 
-class Details(TemplateView):
+class Details(View):
     template_name = "detail.html"
+    form_class = CommentForm
+
     def get_product(self):
         return Product.objects.get(id=self.kwargs['product_id'])
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        product = Product.objects.get(id=self.kwargs['product_id'])
+        return render(request, self.template_name, {'form': form,'product': product})
+
+
+
+
+
 
 def login_view(request):
     if request.method == 'GET':
@@ -52,7 +70,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('login')            
+    return redirect('login')
 
 def register_view(request):
     if request.method == 'POST':
@@ -70,7 +88,7 @@ def register_view(request):
 class AddProduct(ListView):
     model = CommandLine
     template_name = 'add_product.html'
-    
+
     def get(self, request, *args, **kwargs):
         try:
             new_product = CommandLine.objects.get(id_user = request.user)
@@ -92,7 +110,7 @@ class DeleteProduct(ListView):
         cart = CommandLine.objects.get(id_user = request.user)
         cart.id_products.remove(self.kwargs['pk'])
         return redirect('/')
-        
+
 def shopping_cart(request):
     try:
         cart = get_cart(request)

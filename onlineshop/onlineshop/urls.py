@@ -20,11 +20,14 @@ from django.conf.urls.static import static
 import settings
 
 urlpatterns = [
+    url(r'^add_product/(?P<pk>\d+)/$',views.AddProduct.as_view(),name='addproduct'),
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', views.login_view, name='login'),
     url(r'^$', views.Home.as_view(), name='home'),
     url(r'^logout/$', views.logout_view, name='logout'),
     url(r'^register/$', views.register_view, name='register'),
+    url(r'^shoppingcart/$', views.shopping_cart, name='shoppingcart'),
 
 ]+ static('Pictures/', document_root=settings.UPLOAD_ROOT)
+
 

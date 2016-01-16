@@ -10,6 +10,7 @@ from shop.models import CommandLine
 from django.views.generic.list import ListView
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 
 
 class Home(TemplateView):
@@ -71,16 +72,27 @@ class AddProduct(ListView):
     template_name = 'add_product.html'
     
     def get(self, request, *args, **kwargs):
-
-        new_product = CommandLine.objects.get(id_user = request.user)
-        if new_product == None :
+        try:
+            new_product = CommandLine.objects.get(id_user = request.user)
+        except ObjectDoesNotExist:
             new_product = CommandLine(id_user = request.user)
             new_product.save()
             new_product.id_products.add(self.kwargs['pk'])
-        else :
+            return redirect('/')
+        try:
             new_product.id_products.add(self.kwargs['pk'])
-        return redirect('/')
+            return redirect('/')
+        except IntegrityError:
+            return HttpResponse("Item already added!")
 
+class DeleteProduct(ListView):
+    model = CommandLine
+    template_name = 'delete_product.html'
+    def get(self, request, *arsg, **kwargs):
+        cart = CommandLine.objects.get(id_user = request.user)
+        cart.id_products.remove(self.kwargs['pk'])
+        return redirect('/')
+        
 def shopping_cart(request):
     try:
         cart = get_cart(request)
@@ -113,4 +125,3 @@ def confirm_order(request):
     history.save()
     cart.delete()    
     return redirect('home')
-

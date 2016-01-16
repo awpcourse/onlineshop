@@ -2,9 +2,10 @@
 {% extends 'main.html' %}
 {% block content %}
 
-
 {% for product in view.list_products %}
+
 <div>
+
   {{product.name}}<br>
   {{product.description}}<br>
   Pret: {{product.price}}<br>

@@ -21,6 +21,7 @@ import settings
 
 urlpatterns = [
     url(r'^add_product/(?P<pk>\d+)/$',views.AddProduct.as_view(),name='addproduct'),
+    url(r'^delete_product/(?P<pk>\d+)/$',views.DeleteProduct.as_view(),name='deleteproduct'),
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', views.login_view, name='login'),
     url(r'^$', views.Home.as_view(), name='home'),
@@ -28,5 +29,4 @@ urlpatterns = [
     url(r'^register/$', views.register_view, name='register'),
     url(r'^detail/(?P<product_id>\d+)$', views.Details.as_view(), name='detail'),
     url(r'^shoppingcart/$', views.shopping_cart, name='shoppingcart'),
-
 ]+ static('Pictures/', document_root=settings.UPLOAD_ROOT)

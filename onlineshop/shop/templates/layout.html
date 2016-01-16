@@ -3,10 +3,10 @@
     <title>Magazin</title>
   </head>
   <body>
-      
     {% if user.is_authenticated %}
       <p>Hello, {{ user.get_username }} </p>
       <a href="{% url 'logout' %}">Sign out</a>
+      <a href="{%url 'shoppingcart' %}">Your cart</a>
     {% else %}
       <a href="{% url 'login' %}">Sign in </a>
       <a href="{% url 'register' %}">Sign up </a>

@@ -24,7 +24,7 @@ class ProductComment(models.Model):
 
 class History(models.Model):
     id_history = models.AutoField(primary_key=True)
-    id_product = models.ForeignKey(Product)
+    id_product = models.ManyToManyField(Product)
     id_user = models.ForeignKey(User)
     date = models.DateTimeField(
         auto_now_add=True)
@@ -36,5 +36,5 @@ class FaultyProduct(models.Model):
     
 class CommandLine(models.Model):
     id_user = models.ForeignKey(User)
-    id_product = models.ForeignKey(Product)
+    id_products = models.ManyToManyField(Product)
     
